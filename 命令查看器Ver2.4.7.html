@@ -1,7 +1,7 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<audio id="bgMusic" autoplay loop>
+    <audio id="bgMusic">
         <source src="https://sudreamwei.github.io/MinecraftCmdFind.github.io/background_music.mp3" type="audio/mpeg">
         <div>抱歉，您的浏览器不支持音频播放，请尝试更新您的浏览器或使用其他浏览器。</div>
     </audio>
@@ -397,6 +397,15 @@
             }
             window.open(url, '_blank');
         }
+        // 获取播放按钮元素
+        const playMusicButton = document.getElementById('playMusicButton');
+        // 获取音频元素
+        const bgMusic = document.getElementById('bgMusic');
+        // 为播放按钮添加点击事件监听器
+        playMusicButton.addEventListener('click', function() {
+            // 当点击按钮时，播放音频
+            bgMusic.play();
+        });
     </script>
 </head>
 <body>
@@ -505,6 +514,7 @@
         </select>
         <div id="commandInfo" class="command-info"></div>
         <button onclick="goToWiki()">前往 Wiki</button>
+        <button id="playMusicButton">播放音乐</button>
     </div>
 </body>
 </html>
