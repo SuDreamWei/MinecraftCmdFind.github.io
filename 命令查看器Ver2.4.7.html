@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <audio id="bgMusic" autoplay loop>
+        <source src="background_music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft 命令查询机</title>
@@ -70,17 +74,17 @@
         /* 水印样式 */
         #watermark {
             position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 13.2px;
+            top: 10px; /* 调整到中上方 */
+            left: 50%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            font-size: 13.2px; /* 原大小 12px 的 110% */
             color: #888;
             display: flex;
             align-items: center;
         }
         #watermark img {
-            width: 22px;
-            height: 22px;
+            width: 22px; /* 原大小 20px 的 110% */
+            height: 22px; /* 原大小 20px 的 110% */
             margin-left: 5px;
         }
     </style>
@@ -92,6 +96,97 @@
                 document.body.classList.add('error');
             };
         });
+    </script>
+</head>
+<body>
+    <div id="watermark">
+        By Su梦Wei
+        <img src="https://x19.fp.ps.netease.com/file/6790cdbfffa1cf58a3be40c91OLxuQXH06" alt="Watermark Image">
+    </div>
+    <div class="container">
+        <select id="commandSelect" onchange="showCommandInfo()">
+            <option value="alwaysday">alwaysday</option>
+            <option value="camera">camera</option>
+            <option value="camerashake">camerashake</option>
+            <option value="clear">clear</option>
+            <option value="clearspawnpoint">clearspawnpoint</option>
+            <option value="clone">clone</option>
+            <option value="damage">damage</option>
+            <option value="daylock">daylock</option>
+            <option value="deop">deop</option>
+            <option value="dialogue">dialogue</option>
+            <option value="difficulty">difficulty</option>
+            <option value="effect">effect</option>
+            <option value="enchant">enchant</option>
+            <option value="event">event</option>
+            <option value="execute">execute</option>
+            <option value="fill">fill</option>
+            <option value="fog">fog</option>
+            <option value="function">function</option>
+            <option value="gamemode">gamemode</option>
+            <option value="gamerule">gamerule</option>
+            <option value="gametest">gametest</option>
+            <option value="give">give</option>
+            <option value="help">help</option>
+            <option value="hud">hud</option>
+            <option value="immutableworld">immutableworld</option>
+            <option value="inputpermission">inputpermission</option>
+            <option value="kick">kick</option>
+            <option value="kill">kill</option>
+            <option value="list">list</option>
+            <option value="listd">listd</option>
+            <option value="locate">locate</option>
+            <option value="loot">loot</option>
+            <option value="me">me</option>
+            <option value="mobevent">mobevent</option>
+            <option value="msg">msg</option>
+            <option value="music">music</option>
+            <option value="op">op</option>
+            <option value="particle">particle</option>
+            <option value="playanimation">playanimation</option>
+            <option value="playsound">playsound</option>
+            <option value="recipe">recipe</option>
+            <option value="reload">reload</option>
+            <option value="replaceitem">replaceitem</option>
+            <option value="ride">ride</option>
+            <option value="save">save</option>
+            <option value="say">say</option>
+            <option value="schedule">schedule</option>
+            <option value="scoreboard">scoreboard</option>
+            <option value="script">script</option>
+            <option value="scriptevent">scriptevent</option>
+            <option value="setblock">setblock</option>
+            <option value="setmaxplayers">setmaxplayers</option>
+            <option value="setworldspawn">setworldspawn</option>
+            <option value="spawnpoint">spawnpoint</option>
+            <option value="spreadplayers">spreadplayers</option>
+            <option value="stopsound">stopsound</option>
+            <option value="structure">structure</option>
+            <option value="summon">summon</option>
+            <option value="tag">tag</option>
+            <option value="teleport">teleport</option>
+            <option value="tell">tell</option>
+            <option value="tellraw">tellraw</option>
+            <option value="testfor">testfor</option>
+            <option value="testforblock">testforblock</option>
+            <option value="testforblocks">testforblocks</option>
+            <option value="tickingarea">tickingarea</option>
+            <option value="time">time</option>
+            <option value="title">title</option>
+            <option value="titleraw">titleraw</option>
+            <option value="toggledownfall">toggledownfall</option>
+            <option value="tp">tp</option>
+            <option value="volumearea">volumearea</option>
+            <option value="w">w</option>
+            <option value="wb">wb</option>
+            <option value="weather">weather</option>
+            <option value="worldbuilder">worldbuilder</option>
+            <option value="xp">xp</option>
+        </select>
+        <div id="commandInfo" class="command-info"></div>
+        <button onclick="goToWiki()">前往 Wiki</button>
+    </div>
+    <script>
         function showCommandInfo() {
             const selectedCommand = document.getElementById('commandSelect').value;
             const commandInfo = document.getElementById('commandInfo');
@@ -253,13 +348,13 @@
                 case'setmaxplayers':
                     infoText = '设置可加入多人游戏的玩家数量上限';
                     break;
-                case'setworldspawn':
+        case 'setworldspawn':
                     infoText = '设置世界出生点';
                     break;
-                case'spawnpoint':
+                case 'spawnpoint':
                     infoText = '为特定玩家设置出生点';
                     break;
-                case'spreadplayers':
+                case 'spreadplayers':
                     infoText = '把实体随机传送到区域内地表的某个位置';
                     break;
                 case'stopsound':
@@ -333,174 +428,12 @@
             }
             commandInfo.textContent = infoText;
         }
+
         function goToWiki() {
             const selectedCommand = document.getElementById('commandSelect').value;
             const url = `https://zh.minecraft.wiki/w/命令/${selectedCommand}`;
             window.open(url, '_blank');
         }
-        function goToWikiID() {
-            const selectedOption = document.getElementById('idSelect').value;
-            let url = '';
-            switch (selectedOption) {
-                case '动画 ID':
-                    url = 'https://bsc.meteormc.cn/id/ani/';
-                    break;
-                case '群系 ID':
-                    url = 'https://bsc.meteormc.cn/id/bio/';
-                    break;
-                case '伤害 ID':
-                    url = 'https://bsc.meteormc.cn/id/dam/';
-                    break;
-                case '效果 ID':
-                    url = 'https://bsc.meteormc.cn/id/eff/';
-                    break;
-                case '附魔 ID':
-                    url = 'https://bsc.meteormc.cn/id/ench/';
-                    break;
-                case '实体 ID':
-                    url = 'https://bsc.meteormc.cn/id/ent/';
-                    break;
-                case '生成事件 ID':
-                    url = 'https://bsc.meteormc.cn/id/evt/';
-                    break;
-                case '家族 ID':
-                    url = 'https://bsc.meteormc.cn/id/fam/';
-                    break;
-                case '地物 ID':
-                    url = 'https://bsc.meteormc.cn/id/fea/';
-                    break;
-                case '迷雾 ID':
-                    url = 'https://bsc.meteormc.cn/id/fog/';
-                    break;
-                case '粒子 ID':
-                    url = 'https://bsc.meteormc.cn/id/par/';
-                    break;
-                case '规则 ID':
-                    url = 'https://bsc.meteormc.cn/id/rule/';
-                    break;
-                case '准则 ID':
-                    url = 'https://bsc.meteormc.cn/id/sco/';
-                    break;
-                case '槽位 ID':
-                    url = 'https://bsc.meteormc.cn/id/slot/';
-                    break;
-                case '音效 ID':
-                    url = 'https://bsc.meteormc.cn/id/sou/';
-                    break;
-                case '结构 ID':
-                    url = 'https://bsc.meteormc.cn/id/str/';
-                    break;
-            }
-            window.open(url, '_blank');
-        }
     </script>
-</head>
-<body>
-    <div id="watermark">
-        By Su梦Wei
-        <img src="https://x19.fp.ps.netease.com/file/6790cdbfffa1cf58a3be40c91OLxuQXH06" alt="Watermark Image">
-    </div>
-    <div class="container">
-        <select id="idSelect">
-            <option value="动画 ID">动画 ID</option>
-            <option value="群系 ID">群系 ID</option>
-            <option value="伤害 ID">伤害 ID</option>
-            <option value="效果 ID">效果 ID</option>
-            <option value="附魔 ID">附魔 ID</option>
-            <option value="实体 ID">实体 ID</option>
-            <option value="生成事件 ID">生成事件 ID</option>
-            <option value="家族 ID">家族 ID</option>
-            <option value="地物 ID">地物 ID</option>
-            <option value="迷雾 ID">迷雾 ID</option>
-            <option value="粒子 ID">粒子 ID</option>
-            <option value="规则 ID">规则 ID</option>
-            <option value="准则 ID">准则 ID</option>
-            <option value="槽位 ID">槽位 ID</option>
-            <option value="音效 ID">音效 ID</option>
-            <option value="结构 ID">结构 ID</option>
-        </select>
-        <button onclick="goToWikiID()">前往 Wiki_ID</button>
-        <select id="commandSelect" onchange="showCommandInfo()">
-            <option value="alwaysday">alwaysday</option>
-            <option value="camera">camera</option>
-            <option value="camerashake">camerashake</option>
-            <option value="clear">clear</option>
-            <option value="clearspawnpoint">clearspawnpoint</option>
-            <option value="clone">clone</option>
-            <option value="damage">damage</option>
-            <option value="daylock">daylock</option>
-            <option value="deop">deop</option>
-            <option value="dialogue">dialogue</option>
-            <option value="difficulty">difficulty</option>
-            <option value="effect">effect</option>
-            <option value="enchant">enchant</option>
-            <option value="event">event</option>
-            <option value="execute">execute</option>
-            <option value="fill">fill</option>
-            <option value="fog">fog</option>
-            <option value="function">function</option>
-            <option value="gamemode">gamemode</option>
-            <option value="gamerule">gamerule</option>
-            <option value="gametest">gametest</option>
-            <option value="give">give</option>
-            <option value="help">help</option>
-            <option value="hud">hud</option>
-            <option value="immutableworld">immutableworld</option>
-            <option value="inputpermission">inputpermission</option>
-            <option value="kick">kick</option>
-            <option value="kill">kill</option>
-            <option value="list">list</option>
-            <option value="listd">listd</option>
-            <option value="locate">locate</option>
-            <option value="loot">loot</option>
-            <option value="me">me</option>
-            <option value="mobevent">mobevent</option>
-            <option value="msg">msg</option>
-            <option value="music">music</option>
-            <option value="op">op</option>
-            <option value="particle">particle</option>
-            <option value="playanimation">playanimation</option>
-            <option value="playsound">playsound</option>
-            <option value="recipe">recipe</option>
-            <option value="reload">reload</option>
-            <option value="replaceitem">replaceitem</option>
-            <option value="ride">ride</option>
-            <option value="save">save</option>
-            <option value="say">say</option>
-            <option value="schedule">schedule</option>
-            <option value="scoreboard">scoreboard</option>
-            <option value="script">script</option>
-            <option value="scriptevent">scriptevent</option>
-            <option value="setblock">setblock</option>
-            <option value="setmaxplayers">setmaxplayers</option>
-            <option value="setworldspawn">setworldspawn</option>
-            <option value="spawnpoint">spawnpoint</option>
-            <option value="spreadplayers">spreadplayers</option>
-            <option value="stopsound">stopsound</option>
-            <option value="structure">structure</option>
-            <option value="summon">summon</option>
-            <option value="tag">tag</option>
-            <option value="teleport">teleport</option>
-            <option value="tell">tell</option>
-            <option value="tellraw">tellraw</option>
-            <option value="testfor">testfor</option>
-            <option value="testforblock">testforblock</option>
-            <option value="testforblocks">testforblocks</option>
-            <option value="tickingarea">tickingarea</option>
-            <option value="time">time</option>
-            <option value="title">title</option>
-            <option value="titleraw">titleraw</option>
-            <option value="toggledownfall">toggledownfall</option>
-            <option value="tp">tp</option>
-            <option value="volumearea">volumearea</option>
-            <option value="w">w</option>
-            <option value="wb">wb</option>
-            <option value="weather">weather</option>
-            <option value="worldbuilder">worldbuilder</option>
-            <option value="xp">xp</option>
-        </select>
-        <div id="commandInfo" class="command-info"></div>
-        <button onclick="goToWiki()">前往 Wiki</button>
-    </div>
 </body>
 </html>
