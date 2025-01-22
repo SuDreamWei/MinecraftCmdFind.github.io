@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<audio autoplay>
-   <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
-    <!-- 根据实际音乐格式修改 type 属性，如 audio/wav 等 -->
-    </audio>
+<audio id="backgroundAudio" autoplay muted>
+    <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
+</audio>
+<script>
+    document.getElementById('backgroundAudio').addEventListener('loadeddata', function() {
+        this.muted = false; // 取消静音
+        this.play(); // 播放音频
+    });
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft 命令查询机</title>
