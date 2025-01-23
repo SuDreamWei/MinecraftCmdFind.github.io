@@ -1,15 +1,55 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<button onclick="playAudio()">播放音乐</button>
-<audio id="backgroundAudio" muted>
-    <source src="你的音乐文件URL" type="audio/mpeg">
-</audio>
-<script>
-    function playAudio() {
-        document.getElementById("backgroundAudio").play();
-    }
-</script>
+
+    
+<style>
+        /* 样式部分 */
+        .play-button {
+            position: fixed; /* 固定位置 */
+            top: 10px; /* 距离顶部10像素 */
+            right: 10px; /* 距离右侧10像素 */
+            width: 30px; /* 按钮宽度 */
+            height: 30px; /* 按钮高度 */
+            font-size: 14px; /* 字体大小 */
+            background-color: #007BFF; /* 按钮背景颜色 */
+            color: white; /* 字体颜色 */
+            border: none; /* 无边框 */
+            border-radius: 50%; /* 圆形按钮 */
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+            outline: none; /* 去掉焦点时的边框 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-button:hover {
+            background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 播放音乐按钮 -->
+    <button class="play-button" onclick="playAudio()">▶️</button>
+
+    <audio id="backgroundAudio" muted>
+        <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function playAudio() {
+            var audio = document.getElementById("backgroundAudio");
+            if (audio.paused) {
+                audio.play();
+                document.querySelector('.play-button').innerText = '⏸️'; // 播放时显示暂停图标
+            } else {
+                audio.pause();
+                document.querySelector('.play-button').innerText = '▶️'; // 暂停时显示播放图标
+            }
+        }
+    </script>
+    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft 命令查询机</title>
