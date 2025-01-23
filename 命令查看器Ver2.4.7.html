@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<audio id="backgroundAudio" autoplay muted>
-    <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
+<button onclick="playAudio()">播放音乐</button>
+<audio id="backgroundAudio" muted>
+    <source src="你的音乐文件URL" type="audio/mpeg">
 </audio>
 <script>
-    document.getElementById('backgroundAudio').addEventListener('loadeddata', function() {
-        this.muted = false; // 取消静音
-        this.play(); // 播放音频
-    });
+    function playAudio() {
+        document.getElementById("backgroundAudio").play();
+    }
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
