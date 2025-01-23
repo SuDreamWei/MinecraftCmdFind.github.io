@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <style>
+        /* 样式部分 */
+        .play-button {
+            position: fixed; /* 固定位置 */
+            top: 10px; /* 距离顶部10像素 */
+            right: 10px; /* 距离右侧10像素 */
+            width: 30px; /* 按钮宽度 */
+            height: 30px; /* 按钮高度 */
+            font-size: 14px; /* 字体大小 */
+            background-color: #007BFF; /* 按钮背景颜色 */
+            color: white; /* 字体颜色 */
+            border: none; /* 无边框 */
+            border-radius: 50%; /* 圆形按钮 */
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+            outline: none; /* 去掉焦点时的边框 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button:hover {
+            background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
+        }
+
+        /* 新增样式，用于设置文字的位置和样式 */
+        .play-text {
+            position: fixed;
+            top: 18px; /* 与按钮垂直居中对齐 */
+            right: 50px; /* 在按钮左边 */
+            font-size: 14px;
+            color: white; /* 设置文字颜色为白色 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 添加文字 -->
+    <span class="play-text">播放音乐</span>
+    <!-- 播放音乐按钮 -->
+    <button class="play-button" onclick="playAudio()">▶️</button>
+
+    <audio id="backgroundAudio">
+        <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music2.mp3?raw=true" type="audio/mpeg">
+    </audio>
+    <script>
+        // 页面加载完成后尝试自动播放音频
+        window.onload = function () {
+            var audio = document.getElementById("backgroundAudio");
+            audio.play().catch(function (error) {
+                console.error('自动播放音频失败:', error);
+                // 自动播放失败时，将按钮显示为播放图标
+                document.querySelector('.play-button').innerText = '▶️'; 
+            }).then(() => {
+                // 自动播放成功时，将按钮显示为暂停图标
+                document.querySelector('.play-button').innerText = '⏸️'; 
+            });
+        };
+
+        function playAudio() {
+            var audio = document.getElementById("backgroundAudio");
+            if (audio.paused) {
+                audio.play().catch(function (error) {
+                    console.error('音频播放失败:', error);
+                    alert('音频播放失败，请检查网络或稍后重试。');
+                    document.querySelector('.play-button').innerText = '▶️'; // 恢复播放图标
+                });
+                document.querySelector('.play-button').innerText = '⏸️'; // 播放时显示暂停图标
+            } else {
+                audio.pause();
+                document.querySelector('.play-button').innerText = '▶️'; // 暂停时显示播放图标
+            }
+        }
+    </script>
+</body>
+
+</html>
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft 命令查询机</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            background-image: url('https://x19.fp.ps.netease.com/file/6790c8c53cc78fb3b7a98e2aahalEJEo06');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        body::after {
+            content: '';
+            background-color: #f0f0f0;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        body.error::after {
+            opacity: 1;
+        }
+     .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+     .command-info {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+        }
+        /* 水印样式 */
+        #watermark {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13.2px;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+        #watermark img {
+            width: 22px;
+            height: 22px;
+            margin-left: 5px;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', function() {
+            const img = new Image();
+            img.src = 'https://x19.fp.ps.netease.com/file/6790c8c53cc78fb3b7a98e2aahalEJEo06';
+            img.onerror = function() {
+                document.body.classList.add('error');
+            };
+        });
+        function showCommandInfo() {
+            const selectedCommand = document.getElementById('commandSelect').value;
+            const commandInfo = document.getElementById('commandInfo');
+            let infoText = '';
+            switch (selectedCommand) {
+                case 'alwaysday':
+                    infoText = '锁定或解锁日夜循环';
+                    break;
+                case 'camera':
+                    infoText = '修改玩家的相机视角';
+                    break;
+                case 'camerashake':
+                    infoText = '对玩家视野施以一定强度和时间的摇晃效果';
+                    break;
+                case 'clear':
+                    infoText = '清除玩家物品栏的物品';
+                    break;
+                case 'clearspawnpoint':
+                    infoText = '清除世界中设置的重生点';
+                    break;
+                case 'clone':
+                    infoText = '在指定区域之间复制方块结构';
+                    break;
+                case 'damage':
+                    infoText = '对指定实体造成伤害';
+                    break;
+                case 'daylock':
+                    infoText = '锁定或解锁日夜循环';
+                    break;
+                case 'deop':
+                    infoText = '撤销玩家的管理员权限';
+                    break;
+                case 'dialogue':
+                    infoText = '为玩家打开NPC的对话框';
+                    break;
+                case 'difficulty':
+                    infoText = '设定难度等级';
+                    break;
+                case 'effect':
+                    infoText = '管理玩家及其他实体上的状态效果';
+                    break;
+                case 'enchant':
+                    infoText = '为一位玩家手持的物品添加魔咒';
+                    break;
+                case 'event':
+                    infoText = '触发实体事件';
+                    break;
+                case 'execute':
+                    infoText = '在改变执行者、执行位置和角度，添加限制条件，并储存其输出值的情况下执行另一条命令';
+                    break;
+                case 'fill':
+                    infoText = '用特定方块填充一个区域的全部或部分';
+                    break;
+                case 'fog':
+                    infoText = '更改玩家的迷雾效果';
+                    break;
+                case 'function':
+                    infoText = '运行行为包内的1个函数';
+                    break;
+                case 'gamemode':
+                    infoText = '设置玩家的游戏模式';
+                    break;
+                case 'gamerule':
+                    infoText = '设置或查询游戏规则';
+                    break;
+                case 'gametest':
+                    infoText = '基于测试代码与测试结构配对的服务端测试自动化工具';
+                    break;
+                case 'give':
+                    infoText = '给予实体一种指定数量的物品';
+                    break;
+                case 'help':
+                    infoText = '列出所有可用命令';
+                    break;
+                case 'hud':
+                    infoText = '修改HUD可见性';
+                    break;
+                case 'immutableworld':
+                    infoText = '设置世界是否可发生变化';
+                    break;
+                case 'inputpermission':
+                    infoText = '对玩家的权限状态进行指定操作';
+                    break;
+                case 'kick':
+                    infoText = '将一位玩家踢出服务器';
+                    break;
+                case 'kill':
+                    infoText = '杀死/清除实体（玩家、生物等）';
+                    break;
+                case 'list':
+                    infoText = '列出在服务器上的玩家';
+                    break;
+                case 'listd':
+                    infoText = '列出在服务器上的玩家（隐藏命令）';
+                    break;
+                case 'locate':
+                    infoText = '在聊天框中为命令执行者显示给定类型结构或生物群系的最近坐标和距离';
+                    break;
+                case 'loot':
+                    infoText = '将指定的战利品放入物品栏或世界';
+                    break;
+                case'me':
+                    infoText = '显示一条关于你自己的信息';
+                    break;
+                case'mobevent':
+                    infoText = '控制或查询允许运行的生物事件';
+                    break;
+                case'msg':
+                    infoText = '将一条私聊信息发送给一个或多个玩家';
+                    break;
+                case'music':
+                    infoText = '控制音乐';
+                    break;
+                case 'op':
+                    infoText = '授予玩家管理员权限';
+                    break;
+                case 'particle':
+                    infoText = '在指定位置显示粒子效果';
+                    break;
+                case 'playanimation':
+                    infoText = '用于使一个或多个实体运行一次性动画';
+                    break;
+                case 'playsound':
+                    infoText = '播放一段声音';
+                    break;
+                case'recipe':
+                    infoText = '给予或剥夺（解锁或锁定）玩家的合成配方';
+                    break;
+                case'reload':
+                    infoText = '重新加载行为包中的函数和脚本';
+                    break;
+                case'replaceitem':
+                    infoText = '替换方块或实体物品栏内的物品';
+                    break;
+                case 'ride':
+                    infoText = '用于使实体骑乘其他实体、停止实体的骑乘/使坐骑逐出自己的骑手、召唤坐骑/骑手';
+                    break;
+                case'save':
+                    infoText = '准备备份、查询存档状态或恢复存档';
+                    break;
+                case'say':
+                    infoText = '通过聊天框向多个玩家发送消息';
+                    break;
+                case'schedule':
+                    infoText = '在指定的区域全部被加载时执行函数';
+                    break;
+                case'scoreboard':
+                    infoText = '管理记分板的目标、玩家和队伍';
+                    break;
+                case'script':
+                    infoText = '调试GameTest框架选项';
+                    break;
+                case'scriptevent':
+                    infoText = '通过ID和消息来触发脚本事件';
+                    break;
+                case'setblock':
+                    infoText = '将指定位置的方块更改为另一个方块';
+                    break;
+                case'setmaxplayers':
+                    infoText = '设置可加入多人游戏的玩家数量上限';
+                    break;
+                case'setworldspawn':
+                    infoText = '设置世界出生点';
+                    break;
+                case'spawnpoint':
+                    infoText = '为特定玩家设置出生点';
+                    break;
+                case'spreadplayers':
+                    infoText = '把实体随机传送到区域内地表的某个位置';
+                    break;
+                case'stopsound':
+                    infoText = '停止声音播放';
+                    break;
+                case'structure':
+                    infoText = '保存或加载结构';
+                    break;
+                case'summon':
+                    infoText = '召唤一个实体';
+                    break;
+                case 'tag':
+                    infoText = '管理实体的记分板标签';
+                    break;
+                case 'teleport':
+                    infoText = '传送实体到指定地点，并修改其旋转角度';
+                    break;
+                case 'tell':
+                    infoText = '将一条私聊信息发送给一个或多个玩家';
+                    break;
+                case 'tellraw':
+                    infoText = '向一个或多个玩家发送一条JSON文本消息';
+                    break;
+                case 'testfor':
+                    infoText = '检测并统计符合指定条件的实体';
+                    break;
+                case 'testforblock':
+                    infoText = '探测某个方块是否在特定位置';
+                    break;
+                case 'testforblocks':
+                    infoText = '测试两个区域中的方块是否相同';
+                    break;
+                case 'tickingarea':
+                    infoText = '添加、删除或列出常加载区域';
+                    break;
+                case 'time':
+                    infoText = '更改或查询世界的游戏时间';
+                    break;
+                case 'title':
+                    infoText = '控制屏幕标题';
+                    break;
+                case 'titleraw':
+                    infoText = '控制屏幕标题(JSON)';
+                    break;
+                case 'toggledownfall':
+                    infoText = '切换天气';
+                    break;
+                case 'tp':
+                    infoText = '传送实体到指定地点，并修改其旋转角度';
+                    break;
+                case 'volumearea':
+                    infoText = '在当前维度中添加、移除或列出功能域';
+                    break;
+                case 'w':
+                    infoText = '将一条私聊信息发送给一个或多个玩家';
+                    break;
+                case 'wb':
+                    infoText = '启用或禁用worldbuilder（世界建造者）能力';
+                    break;
+                case 'weather':
+                    infoText = '更改游戏中的天气';
+                    break;
+                case 'worldbuilder':
+                    infoText = '启用或禁用worldbuilder（世界建造者）能力';
+                    break;
+                case 'xp':
+                    infoText = '给予玩家经验';
+                    break;
+                default:
+                    infoText = '';
+            }
+            commandInfo.textContent = infoText;
+        }
+        function goToWiki() {
+            const selectedCommand = document.getElementById('commandSelect').value;
+            const url = `https://zh.minecraft.wiki/w/命令/${selectedCommand}`;
+            window.open(url, '_blank');
+        }
+        function goToWikiID() {
+            const selectedOption = document.getElementById('idSelect').value;
+            let url = '';
+            switch (selectedOption) {
+                case '动画 ID':
+                    url = 'https://bsc.meteormc.cn/id/ani/';
+                    break;
+                case '群系 ID':
+                    url = 'https://bsc.meteormc.cn/id/bio/';
+                    break;
+                case '伤害 ID':
+                    url = 'https://bsc.meteormc.cn/id/dam/';
+                    break;
+                case '效果 ID':
+                    url = 'https://bsc.meteormc.cn/id/eff/';
+                    break;
+                case '附魔 ID':
+                    url = 'https://bsc.meteormc.cn/id/ench/';
+                    break;
+                case '实体 ID':
+                    url = 'https://bsc.meteormc.cn/id/ent/';
+                    break;
+                case '生成事件 ID':
+                    url = 'https://bsc.meteormc.cn/id/evt/';
+                    break;
+                case '家族 ID':
+                    url = 'https://bsc.meteormc.cn/id/fam/';
+                    break;
+                case '地物 ID':
+                    url = 'https://bsc.meteormc.cn/id/fea/';
+                    break;
+                case '迷雾 ID':
+                    url = 'https://bsc.meteormc.cn/id/fog/';
+                    break;
+                case '粒子 ID':
+                    url = 'https://bsc.meteormc.cn/id/par/';
+                    break;
+                case '规则 ID':
+                    url = 'https://bsc.meteormc.cn/id/rule/';
+                    break;
+                case '准则 ID':
+                    url = 'https://bsc.meteormc.cn/id/sco/';
+                    break;
+                case '槽位 ID':
+                    url = 'https://bsc.meteormc.cn/id/slot/';
+                    break;
+                case '音效 ID':
+                    url = 'https://bsc.meteormc.cn/id/sou/';
+                    break;
+                case '结构 ID':
+                    url = 'https://bsc.meteormc.cn/id/str/';
+                    break;
+            }
+            window.open(url, '_blank');
+        }
+    </script>
+</head>
+<body>
+    <div id="watermark">
+        By Su梦Wei
+        <img src="https://x19.fp.ps.netease.com/file/6790cdbfffa1cf58a3be40c91OLxuQXH06" alt="Watermark Image">
+    </div>
+    <div class="container">
+        <select id="idSelect">
+            <option value="动画 ID">动画 ID</option>
+            <option value="群系 ID">群系 ID</option>
+            <option value="伤害 ID">伤害 ID</option>
+            <option value="效果 ID">效果 ID</option>
+            <option value="附魔 ID">附魔 ID</option>
+            <option value="实体 ID">实体 ID</option>
+            <option value="生成事件 ID">生成事件 ID</option>
+            <option value="家族 ID">家族 ID</option>
+            <option value="地物 ID">地物 ID</option>
+            <option value="迷雾 ID">迷雾 ID</option>
+            <option value="粒子 ID">粒子 ID</option>
+            <option value="规则 ID">规则 ID</option>
+            <option value="准则 ID">准则 ID</option>
+            <option value="槽位 ID">槽位 ID</option>
+            <option value="音效 ID">音效 ID</option>
+            <option value="结构 ID">结构 ID</option>
+        </select>
+        <button onclick="goToWikiID()">前往 Wiki_ID</button>
+        <select id="commandSelect" onchange="showCommandInfo()">
+            <option value="alwaysday">alwaysday</option>
+            <option value="camera">camera</option>
+            <option value="camerashake">camerashake</option>
+            <option value="clear">clear</option>
+            <option value="clearspawnpoint">clearspawnpoint</option>
+            <option value="clone">clone</option>
+            <option value="damage">damage</option>
+            <option value="daylock">daylock</option>
+            <option value="deop">deop</option>
+            <option value="dialogue">dialogue</option>
+            <option value="difficulty">difficulty</option>
+            <option value="effect">effect</option>
+            <option value="enchant">enchant</option>
+            <option value="event">event</option>
+            <option value="execute">execute</option>
+            <option value="fill">fill</option>
+            <option value="fog">fog</option>
+            <option value="function">function</option>
+            <option value="gamemode">gamemode</option>
+            <option value="gamerule">gamerule</option>
+            <option value="gametest">gametest</option>
+            <option value="give">give</option>
+            <option value="help">help</option>
+            <option value="hud">hud</option>
+            <option value="immutableworld">immutableworld</option>
+            <option value="inputpermission">inputpermission</option>
+            <option value="kick">kick</option>
+            <option value="kill">kill</option>
+            <option value="list">list</option>
+            <option value="listd">listd</option>
+            <option value="locate">locate</option>
+            <option value="loot">loot</option>
+            <option value="me">me</option>
+            <option value="mobevent">mobevent</option>
+            <option value="msg">msg</option>
+            <option value="music">music</option>
+            <option value="op">op</option>
+            <option value="particle">particle</option>
+            <option value="playanimation">playanimation</option>
+            <option value="playsound">playsound</option>
+            <option value="recipe">recipe</option>
+            <option value="reload">reload</option>
+            <option value="replaceitem">replaceitem</option>
+            <option value="ride">ride</option>
+            <option value="save">save</option>
+            <option value="say">say</option>
+            <option value="schedule">schedule</option>
+            <option value="scoreboard">scoreboard</option>
+            <option value="script">script</option>
+            <option value="scriptevent">scriptevent</option>
+            <option value="setblock">setblock</option>
+            <option value="setmaxplayers">setmaxplayers</option>
+            <option value="setworldspawn">setworldspawn</option>
+            <option value="spawnpoint">spawnpoint</option>
+            <option value="spreadplayers">spreadplayers</option>
+            <option value="stopsound">stopsound</option>
+            <option value="structure">structure</option>
+            <option value="summon">summon</option>
+            <option value="tag">tag</option>
+            <option value="teleport">teleport</option>
+            <option value="tell">tell</option>
+            <option value="tellraw">tellraw</option>
+            <option value="testfor">testfor</option>
+            <option value="testforblock">testforblock</option>
+            <option value="testforblocks">testforblocks</option>
+            <option value="tickingarea">tickingarea</option>
+            <option value="time">time</option>
+            <option value="title">title</option>
+            <option value="titleraw">titleraw</option>
+            <option value="toggledownfall">toggledownfall</option>
+            <option value="tp">tp</option>
+            <option value="volumearea">volumearea</option>
+            <option value="w">w</option>
+            <option value="wb">wb</option>
+            <option value="weather">weather</option>
+            <option value="worldbuilder">worldbuilder</option>
+            <option value="xp">xp</option>
+        </select>
+        <div id="commandInfo" class="command-info"></div>
+        <button onclick="goToWiki()">前往 Wiki</button>
+    </div>
+</body>
+</html>
