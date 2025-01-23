@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <style>
         /* 样式部分 */
@@ -20,12 +21,24 @@
             align-items: center;
             justify-content: center;
         }
+
         .play-button:hover {
             background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
         }
+
+        /* 新增样式，用于设置文字的位置和样式 */
+        .play-text {
+            position: fixed;
+            top: 18px; /* 与按钮垂直居中对齐 */
+            right: 50px; /* 在按钮左边 */
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
+    <!-- 添加文字 -->
+    <span class="play-text">播放音乐</span>
     <!-- 播放音乐按钮 -->
     <button class="play-button" onclick="playAudio()">▶️</button>
 
@@ -33,10 +46,23 @@
         <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
     </audio>
     <script>
+        // 页面加载完成后尝试自动播放音频
+        window.onload = function () {
+            var audio = document.getElementById("backgroundAudio");
+            audio.play().catch(function (error) {
+                console.error('自动播放音频失败:', error);
+                // 自动播放失败时，将按钮显示为播放图标
+                document.querySelector('.play-button').innerText = '▶️'; 
+            }).then(() => {
+                // 自动播放成功时，将按钮显示为暂停图标
+                document.querySelector('.play-button').innerText = '⏸️'; 
+            });
+        };
+
         function playAudio() {
             var audio = document.getElementById("backgroundAudio");
             if (audio.paused) {
-                audio.play().catch(function(error) {
+                audio.play().catch(function (error) {
                     console.error('音频播放失败:', error);
                     alert('音频播放失败，请检查网络或稍后重试。');
                     document.querySelector('.play-button').innerText = '▶️'; // 恢复播放图标
@@ -49,6 +75,7 @@
         }
     </script>
 </body>
+
 </html>
     
 
