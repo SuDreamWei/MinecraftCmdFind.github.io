@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-
-    
-<style>
+    <style>
         /* 样式部分 */
         .play-button {
             position: fixed; /* 固定位置 */
@@ -31,15 +29,18 @@
     <!-- 播放音乐按钮 -->
     <button class="play-button" onclick="playAudio()">▶️</button>
 
-<audio id="backgroundAudio" muted>
-        
+    <audio id="backgroundAudio">
         <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
     </audio>
-<script>
+    <script>
         function playAudio() {
             var audio = document.getElementById("backgroundAudio");
             if (audio.paused) {
-                audio.play();
+                audio.play().catch(function(error) {
+                    console.error('音频播放失败:', error);
+                    alert('音频播放失败，请检查网络或稍后重试。');
+                    document.querySelector('.play-button').innerText = '▶️'; // 恢复播放图标
+                });
                 document.querySelector('.play-button').innerText = '⏸️'; // 播放时显示暂停图标
             } else {
                 audio.pause();
@@ -47,6 +48,8 @@
             }
         }
     </script>
+</body>
+</html>
     
 
     <meta charset="UTF-8">
