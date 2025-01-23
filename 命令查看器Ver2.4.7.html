@@ -31,12 +31,11 @@
     <!-- 播放音乐按钮 -->
     <button class="play-button" onclick="playAudio()">▶️</button>
 
-    <audio id="backgroundAudio" muted>
+<audio id="backgroundAudio" muted>
+        
         <source src="https://github.com/sudreamwei/MinecraftCmdFind.github.io/blob/main/background_music.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
-
-    <script>
+<script>
         function playAudio() {
             var audio = document.getElementById("backgroundAudio");
             if (audio.paused) {
